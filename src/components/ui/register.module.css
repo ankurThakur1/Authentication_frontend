@@ -90,6 +90,14 @@
     border-radius: 5px;
     margin-top: 0.6rem;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+.btn:hover{
+    background: #ecb210;
+}
+.btn:disabled{
+    background: #ffe7a6;
+    cursor: not-allowed;
 }
 .form p{
     margin-top: 0.6rem;

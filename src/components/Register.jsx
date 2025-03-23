@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import style from "./ui/register.module.css";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ const Register = () => {
       password: ""
     });
   // https://app.svgator.com/assets/svgator.webapp/log-in-girl.svg
+
+    const navigate = useNavigate()
   
   const handleFormData = (e) => {
     setFormData({
@@ -22,19 +25,44 @@ const Register = () => {
     });
   }
 
-  const validateFormData = () => {
-    const validFormField = {};
-    const isValid = false;
+  // const validateFormData = () => {
+  //   const validFormField = {};
+  //   const isValid = false;
 
-    if(formData.username.length === ""){
-      validFormField.error = "Username field cannot be empty"
-    }
+  //   if(formData.username.length === ""){
+  //     validFormField.error = "Username field cannot be empty"
+  //   }
 
-  }
+  // }
   
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
+    try {
+      const response = await fetch("http://localhost:3000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+      const result = await response.json();
+      console.log(result);
+      if(result.success){
+        setFormData({
+          username: "",
+          email: "",
+          password: ""
+        });
+        toast.success(result.message);
+        navigate("/login");
+      }
+      else{
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 
@@ -43,7 +71,7 @@ const Register = () => {
     <div className={style.container}>
       <div className={style.left_col}>
         <div className={style.signup_svg}>
-          <img src="/signup2.png" alt="signup-svg" />
+          <img src="/Signup.png" alt="signup-svg" />
         </div>
       </div>
       <div className={style.register}>
