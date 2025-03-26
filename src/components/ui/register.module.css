@@ -59,6 +59,7 @@
 .form_group{
     margin-bottom: 0.6rem;
     padding: 0.3rem;
+    position: relative;
     /* border: 1px solid black; */
 }
 .label{
@@ -77,6 +78,18 @@
 }
 .input::placeholder{
     color: rgb(161, 161, 161);
+}
+.show{
+    position: absolute;
+    top: 52%;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    transform: translate(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 .btn{
     /* background: #263238; */

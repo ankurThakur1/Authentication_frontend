@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import style from "./ui/register.module.css";
+import { Eye, EyeOff } from "lucide-react"
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const Login = () => {
       password: ""
     });
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     console.log(formData);
@@ -35,15 +37,14 @@ const Login = () => {
         // console.log(result);
         if(result.success){
           localStorage.setItem("token", result.accessToken);
-          
-            navigate("/profile");
-            setLoading(false);
-            setFormData({
-              username: "",
-              email: "",
-              password: ""
-            });
-            toast.success(result.message);
+          navigate("/profile");
+          setLoading(false);
+          setFormData({
+            username: "",
+            email: "",
+            password: ""
+          });
+          toast.success(result.message);
         }
         else{
           toast.error(result.message);
@@ -62,11 +63,15 @@ const Login = () => {
       }
     }
 
+    const handleShowPassword = () => {
+      setShowPassword(!showPassword);
+    }
+
   return (
     <div className={style.container}>
       <div className={style.left_col}>
         <div className={style.signup_svg}>
-          <img src="/login.png" alt="signup-svg" />
+          <img src="/login.png" alt="login-svg" />
         </div>
       </div>
       <div className={style.register}>
@@ -80,7 +85,14 @@ const Login = () => {
           </div>
           <div className={style.form_group}>
             <label className={style.label} htmlFor="password">Password</label>
-            <input className={style.input} type="password" placeholder="password" name="password" id="password" value={formData.password} onChange={handleFormData} />
+            <input className={style.input} type={showPassword ? "text" : "password"} placeholder="password" name="password" id="password" value={formData.password} onChange={handleFormData} />
+            {
+              showPassword ? (
+                <span className={style.show} onClick={handleShowPassword}><Eye width={20} height={20} color="rgb(194, 194, 194)" /></span>
+              ) : (
+                <span className={style.show} onClick={handleShowPassword}><EyeOff width={20} height={20} color="rgb(194, 194, 194)" /></span>
+              )
+            }
           </div>
           <button type="submit" disabled={loading} className={style.btn}>{loading ? "Signing in..." : "Login"}</button>
           <p>Don't have an account? <Link to="/register">Register</Link></p>

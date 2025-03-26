@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import style from "./ui/register.module.css";
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { Eye, EyeOff } from "lucide-react"
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ const Register = () => {
       email: "",
       password: ""
     });
+    const [showPassword, setShowPassword] = useState(false);
+    
   // https://app.svgator.com/assets/svgator.webapp/log-in-girl.svg
 
     const navigate = useNavigate()
@@ -65,7 +68,9 @@ const Register = () => {
     }
   }
 
-
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
 
   return (
     <div className={style.container}>
@@ -89,7 +94,14 @@ const Register = () => {
           </div>
           <div className={style.form_group}>
             <label className={style.label} htmlFor="password">Password</label>
-            <input className={style.input} type="password" placeholder="password" name="password" id="password" value={formData.password} onChange={handleFormData} />
+            <input className={style.input} type={showPassword ? "text" : "password"} placeholder="password" name="password" id="password" value={formData.password} onChange={handleFormData} />
+            {
+              showPassword ? (
+                <span className={style.show} onClick={handleShowPassword}><Eye width={20} height={20} color="rgb(194, 194, 194)" /></span>
+              ) : (
+                <span className={style.show} onClick={handleShowPassword}><EyeOff width={20} height={20} color="rgb(194, 194, 194)" /></span>
+              )
+            }
           </div>
           <button type="submit" className={style.btn}>Register</button>
           <p>Already have an account? <Link to="/login">Login</Link></p>

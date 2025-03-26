@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { redirect, useNavigate } from 'react-router-dom';
+import style from "./ui/profile.module.css";
 
 const Profile = () => {
     const [userData, setUserData] = useState({});
@@ -29,16 +30,24 @@ const Profile = () => {
     const handleLogout = () => {
       localStorage.removeItem("token");
       navigate("/login");
+      window.location.reload()
     }
+
+    const newDate = new Date(userData?.createdAt);
 
     useEffect(() => {
       fetchUserDetails();
     }, []);
 
   return (
-    <div>
-      Profile{userData?.username}
-      <button onClick={handleLogout}>Logout</button>
+    <div className={style.container}>
+      <h1 className={style.msg}>Welcome <span className={style.name}>{userData?.username}</span></h1>
+      <div className={style.row}>
+        <p>Name: <span className={style.name}>{userData?.username}</span></p>
+        <p>Email: <span className={style.email}>{userData?.email}</span></p>
+        <p className={style.date}>Created At: <span className={style.date}>{`${newDate.getDate()}-${newDate.toLocaleString("en-US", {month: "short"})}-${newDate.getFullYear()}`}</span></p>
+        <button className={style.btn} onClick={handleLogout}>Logout</button>
+      </div>
     </div>
   )
 }
